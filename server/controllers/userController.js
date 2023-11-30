@@ -19,7 +19,7 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, englishLevel } = req.body;
     const usernameCheck = await User.findOne({ username });
     if (usernameCheck)
       return res.json({ msg: "Username already used", status: false });
@@ -31,6 +31,7 @@ module.exports.register = async (req, res, next) => {
       email,
       username,
       password: hashedPassword,
+      englishLevel,
     });
     delete user.password;
     return res.json({ status: true, user });
@@ -41,17 +42,25 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find({ _id: { $ne: req.params.id } }).select([
+    const englishLevel = req.query.englishLevel;
+    let query = { _id: { $ne: req.params.id } };
+    if (englishLevel) {
+      query.englishLevel = englishLevel;
+    }
+
+    const users = await User.find(query).select([
       "email",
       "username",
       "avatarImage",
       "_id",
+      "englishLevel",
     ]);
     return res.json(users);
   } catch (ex) {
     next(ex);
   }
 };
+
 
 module.exports.setAvatar = async (req, res, next) => {
   try {

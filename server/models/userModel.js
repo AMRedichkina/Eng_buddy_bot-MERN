@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  englishLevel: {
+    type: String,
+    required: true,
+    enum: ['beginner', 'intermediate', 'advanced'],
+  },
 });
 
 module.exports = mongoose.model("Users", userSchema);

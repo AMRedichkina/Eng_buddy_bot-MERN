@@ -18,10 +18,25 @@ export default function Login() {
     theme: "dark",
   };
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/");
+    const storedUserData = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      const userEnglishLevel = userData.englishLevel;
+      
+      switch (userEnglishLevel) {
+        case "beginner":
+          navigate("/chat/beginner");
+          break;
+        case "intermediate":
+          navigate("/chat/intermediate");
+          break;
+        case "advanced":
+          navigate("/chat/advanced");
+          break;
+      }
     }
-  }, []);
+  }, [navigate]);
+  
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -47,19 +62,29 @@ export default function Login() {
         username,
         password,
       });
-      if (data.status === false) {
-        toast.error(data.msg, toastOptions);
-      }
       if (data.status === true) {
         localStorage.setItem(
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
-
-        navigate("/");
+  
+        switch (data.user.englishLevel) {
+          case "beginner":
+            navigate("/chat/beginner");
+            break;
+          case "intermediate":
+            navigate("/chat/intermediate");
+            break;
+          case "advanced":
+            navigate("/chat/advanced");
+            break;
+        }
+      } else if (data.status === false) {
+        toast.error(data.msg, toastOptions);
       }
     }
   };
+  
 
   return (
     <>

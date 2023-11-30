@@ -21,20 +21,35 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
+    englishLevel: "",
   });
 
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/");
+    const user = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
+    if (user) {
+      const userDetails = JSON.parse(user);
+      switch (userDetails.englishLevel) {
+        case "beginner":
+          navigate("/chat/beginner");
+          break;
+        case "intermediate":
+          navigate("/chat/intermediate");
+          break;
+        case "advanced":
+          navigate("/chat/advanced");
+          break;
+      }
     }
-  }, []);
+  }, [navigate]);
 
   const handleChange = (event) => {
+    //console.log("Field changed:", event.target.name, "Value:", event.target.value);
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   const handleValidation = () => {
-    const { password, confirmPassword, username, email } = values;
+    const { password, confirmPassword, username, email, englishLevel } = values;
+    //console.log("Validating englishLevel:", englishLevel);
     if (password !== confirmPassword) {
       toast.error(
         "Password and confirm password should be same.",
@@ -56,19 +71,22 @@ export default function Register() {
     } else if (email === "") {
       toast.error("Email is required.", toastOptions);
       return false;
+    } else if (englishLevel === "") {
+      toast.error("Please select your English level.", toastOptions);
+      return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
-      const { email, username, password } = values;
+      const { email, username, password, englishLevel } = values;
       const { data } = await axios.post(registerRoute, {
         username,
         email,
         password,
+        englishLevel,
       });
 
       if (data.status === false) {
@@ -83,6 +101,7 @@ export default function Register() {
       }
     }
   };
+  const { username, email, password, confirmPassword, englishLevel } = values;
 
   return (
     <>
@@ -116,6 +135,17 @@ export default function Register() {
             name="confirmPassword"
             onChange={(e) => handleChange(e)}
           />
+          <select
+            name="englishLevel"
+            value={englishLevel}
+            onChange={(e) => handleChange(e)}
+          >
+            <option value="">Select English Level</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+
           <button type="submit">Create User</button>
           <span>
             Already have an account ? <Link to="/login">Login.</Link>
@@ -158,7 +188,8 @@ const FormContainer = styled.div`
     border-radius: 2rem;
     padding: 3rem 5rem;
   }
-  input {
+  input,
+  select {
     background-color: transparent;
     padding: 1rem;
     border: 0.1rem solid #4e0eff;
@@ -170,6 +201,9 @@ const FormContainer = styled.div`
       border: 0.1rem solid #997af0;
       outline: none;
     }
+  }
+  select option {
+    color: grey;
   }
   button {
     background-color: #4e0eff;

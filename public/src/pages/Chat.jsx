@@ -8,7 +8,7 @@ import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
 
-export default function Chat() {
+export default function Chat({level}) {
   const navigate = useNavigate();
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
@@ -35,25 +35,30 @@ export default function Chat() {
   useEffect(async () => {
     if (currentUser) {
       if (currentUser.isAvatarImageSet) {
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`, {
+          params: { englishLevel: level},
+        });
         setContacts(data.data);
       } else {
         navigate("/setAvatar");
       }
     }
-  }, [currentUser]);
+  }, [currentUser, level]);
+  
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
+
   return (
     <>
       <Container>
         <div className="container">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
           {currentChat === undefined ? (
-            <Welcome />
+            <Welcome level={level}/>
           ) : (
-            <ChatContainer currentChat={currentChat} socket={socket} />
+            <ChatContainer currentChat={currentChat} socket={socket}/>
           )}
         </div>
       </Container>

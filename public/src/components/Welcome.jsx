@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Robot from "../assets/robot.gif";
-export default function Welcome() {
+
+export default function Welcome({level}) {
   const [userName, setUserName] = useState("");
   useEffect(async () => {
     setUserName(
@@ -13,6 +14,9 @@ export default function Welcome() {
   return (
     <Container>
       <img src={Robot} alt="" />
+      <h1>
+      <span>Chat for {level}s </span>
+      </h1>
       <h1>
         Welcome, <span>{userName}!</span>
       </h1>

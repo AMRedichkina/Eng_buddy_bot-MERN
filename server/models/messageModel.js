@@ -11,6 +11,7 @@ const MessageSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+    chat: { type: String, default: "begginer" }, 
   },
   {
     timestamps: true,
