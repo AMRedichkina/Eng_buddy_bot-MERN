@@ -45,7 +45,17 @@ export default function SetAvatar() {
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(user)
         );
-        navigate("/");
+        switch (user.englishLevel) {
+          case "beginner":
+            navigate("/chat/beginner");
+            break;
+          case "intermediate":
+            navigate("/chat/intermediate");
+            break;
+          case "advanced":
+            navigate("/chat/advanced");
+            break;
+        }
       } else {
         toast.error("Error setting avatar. Please try again.", toastOptions);
       }
