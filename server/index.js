@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -24,6 +25,13 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+
+app.get('/homepage', (req, res) => {
+  res.render('homepage', { title: "Homepage" });
+});
+
+app.set('view engine', 'jade'); 
+app.set("views", path.join(__dirname, "views"));
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)
