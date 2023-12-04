@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  .container.mt-5
+    .row
+      .col-md-12
+        .card
+          .card-body
+            h3.card-title #{exercise.title}
+            p.card-text
+              strong Difficulty: 
+              | #{exercise.difficulty}
+            p.card-text
+              strong Topic: 
+              | #{exercise.topic}
+            p.card-text
+              strong Rating: 
+              | #{exercise.rating} / 5
+            h4 Task Description
+            p #{exercise.taskDescription}
+            h4 Test
+            p #{exercise.test}
+
+            // Кнопки навигации
+            .btn-group.mt-3
+              a.btn.btn-secondary(href=`/exercises/${exercise.prevId}`) Previous Exercise
+              a.btn.btn-primary(href='/exercises') Back to Exercises
+              a.btn.btn-secondary(href=`/exercises/${exercise.nextId}`) Next Exercise

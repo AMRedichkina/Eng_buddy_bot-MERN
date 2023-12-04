@@ -3,19 +3,37 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title #{title}
-    // Add your stylesheet link here
-    link(rel='stylesheet', href='/path/to/your/css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
 
   body
     header
-      // Your header content here
+      nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.fixed-top
+        .container-fluid
+          a.navbar-brand(href='http://localhost:5000/homepage') Eng Buddy Chat
+          button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+          #navbarNav.collapse.navbar-collapse
+            ul.navbar-nav.ml-auto
+              li.nav-item
+                a.nav-link(href='http://localhost:5000/exercises') Exercises
+              li.nav-item
+                a.nav-link(href='http://localhost:5000/account') Account
+              li.nav-item
+                a.nav-link(href='http://localhost:3000/login') Login
+              li.nav-item
+                a.nav-link(href='http://localhost:3000/register') Register
 
-    block content
-      // This is where the content of your other Pug files will be injected
+    .main-container
+      .content
+        block content
 
-    footer
-      // Your footer content here
+    footer.footer
+      .container
+        p.text-center © 2023 Eng Buddy Chat
 
-    // Add your scripts here
-    script(src='/path/to/your/javascript.js')
+  script(src='/bootstrap/js/bootstrap.min.js')
+  script(src='/js/jquery/dist/jquery.min.js')
+  <script src="https://kit.fontawesome.com/3f0e06b254.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+

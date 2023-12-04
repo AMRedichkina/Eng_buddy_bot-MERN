@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  .main-container
+    .container
+      h2 Exercises List
+
+    .container.filters.mb-3
+      form.d-flex.flex-column
+        select.form-select.mb-2(name='difficulty')
+          option(value='') Difficulty
+          option(value='Beginner') Beginner
+          option(value='Intermediate') Intermediate
+          option(value='Advanced') Advanced
+        select.form-select.mb-2(name='topic')
+          option(value='') Topic
+          option(value='Grammar') Grammar
+          option(value='Vocabulary') Vocabulary
+          option(value='Listening') Listening
+        button.btn.btn-primary(type='submit') Filter
+
+    .container
+      .row
+        each exercise in exercises
+          .col-md-4.mb-3
+            a(href=`/exercises/${exercise.id}`)
+              .card.custom-card
+                .card-body
+                  .d-flex.flex-column.align-items-center
+                    h5.card-title.mb-1 #{exercise.title}
+                    span.badge.badge-secondary.mb-1 #{exercise.difficulty}
+                    span.badge.badge-info.mb-1 #{exercise.topic}
+
+                    p
+                      - var i = 0
+                      while i < exercise.rating
+                        i.fa.fa-star.text-warning(style="color: #f5ff66;")
+                        - i++
+                      while i < 5
+                        i.fa.fa-star.text-secondary(style="color: #f5ff66;")
+                        - i++

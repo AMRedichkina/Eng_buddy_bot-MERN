@@ -4,6 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
 const messageRoutes = require("./routes/messages");
+const exercisesRoutes = require("./routes/exercisesRoutes");
+const homepageRoutes = require("./routes/homepageRoutes");
+const accountsRoutes = require("./routes/accountsRoutes");
 const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
@@ -26,12 +29,14 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.get('/homepage', (req, res) => {
-  res.render('homepage', { title: "Homepage" });
-});
+app.use('/homepage', homepageRoutes);
+app.use('/exercises', exercisesRoutes);
+app.use('/account', accountsRoutes);
 
 app.set('view engine', 'jade'); 
 app.set("views", path.join(__dirname, "views"));
+
+app.use(express.static('public'));
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)

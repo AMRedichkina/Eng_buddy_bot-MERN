@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .main-container
+    .container
+      .row
+        .col-md-3
+          .user-info
+            img.avatar(src='/images/landing.png', alt='User Avatar')
+            h3 User Name
+            p Email: user@example.com
+            p Age: 30
+
+        .col-md-9
+          .user-statistics
+            h2 Exercise Statistics
+            canvas#exerciseChart(width='400', height='200') // Здесь будет отображаться график статистики
+            script.
+              document.addEventListener('DOMContentLoaded', () => {
+                const ctx = document.getElementById('exerciseChart').getContext('2d');
+                const exerciseData = !{JSON.stringify(exerciseData)}; // Передача данных из контроллера
+                const chart = new Chart(ctx, {
+                  type: 'line',
+                  data: exerciseData,
+                });
+              });
